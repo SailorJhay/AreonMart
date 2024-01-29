@@ -17,16 +17,25 @@ async function main() {
     retailerContract.target
   );
 
-  // sleep for 10 seconds
-  await new Promise(r => setTimeout(r, 10000));
+  // // Add constructor arguments here
+  // // name,desc
+  // const marketplaceContract = await hre.ethers.deployContract("MarketPlace",[]
+  // await marketplaceContract.waitForDeployment();
 
-  const retailerAddress = retailerContract.target;
 
-  //verify contract
-  await hre.run("verify:verify", {
-    address: retailerAddress,
-    constructorArguments: [],
-  });
+  // console.log(
+  //   "Marketplace Contract Address:",
+  //     marketplaceContract.target
+  //   );
+
+  const factoryContract = await hre.ethers.deployContract("MarketPlaceFactory");
+  await factoryContract.waitForDeployment();
+
+  console.log(
+    "Factory Contract Address:",
+      factoryContract.target
+    );
+
 
 }
 
