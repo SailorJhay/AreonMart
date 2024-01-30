@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
-
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MarketPlace is Ownable{
@@ -58,6 +57,22 @@ contract MarketPlace is Ownable{
         products[_id].quantity = _quantity;
         products[_id].ipfsLink = _ipfsLink;
     }
+
+    // function buyProduct(uint _id) public payable {
+    //     require(_id > 0 && _id <= products.length, "Invalid product id");
+    //     require(products[_id].quantity > 0, "Product out of stock");
+    //     require(msg.value >= products[_id].price, "Insufficient funds");
+
+    //     products[_id].quantity--;
+    //     products[_id].sold++;
+       
+    //    // transfer the product price to the owner
+    //     payable(owner()).transfer(products[_id].price);
+
+    //     // mint the NFT to the buyer
+    
+
+    // } 
 
 }
 
