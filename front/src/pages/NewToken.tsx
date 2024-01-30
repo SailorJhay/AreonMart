@@ -6,11 +6,15 @@ import { ethers } from 'ethers';
 
 const NewToken = (props) => {
   const factoryContract = props["factoryContract"];
-  const [tokenName, setTokenName] = useState();
-  const [tokenSymbol, setTokenSymbol] = useState();
-  const [tokenSupply, setTokenSupply] = useState();
+  console.log(factoryContract);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [ipfsLink, setIpfsLink] = useState("");
+  // const [sold, setSold] = useState("");
 
-  const mintToken = async (e) => {
+  const addProduct = async (e) => {
     e.preventDefault();
 
     try {
@@ -19,125 +23,160 @@ const NewToken = (props) => {
         throw new Error('Factory contract not available');
       }
 
-      // Call the deployToken function with user-provided parameters
-      const tx = await factoryContract.deployToken(tokenName, tokenSymbol, tokenSupply);
+      // Call the addProduct function with user-provided parameters
+      const tx = await factoryContract.addProduct(name, price, quantity, ipfsLink, description);
       const receipt = await tx.wait();
 
       // Check the transaction receipt for success or failure
       if (receipt.status === 1) {
-        alert('Token Minted Successfully!');
-        // You can perform additional actions upon successful minting, if needed
+        alert('Product Added Successfully!');
+        // You can perform additional actions upon successful addition, if needed
       } else {
-        alert('Token Minting Failed');
+        alert('Failed to Add Product');
       }
     } catch (error) {
-      console.error('Error minting token:', error);
-      alert('Error Minting Token');
+      console.error('Error adding product:', error);
+      alert('Error Adding Product');
     }
   };
 
   return (
     <>
       <div className="mx-auto max-w-270">
-        
-        <Breadcrumb pageName="New Areon" />
+
+        <Breadcrumb pageName="New Product" />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                🚀 Areon Generator
+                  🚀 Add New Product
                 </h3>
               </div>
-              
+
               <div className="p-7">
-                <form action="#">
+                <form onSubmit={addProduct}>
 
-              <div className="mb-5.5 gap-5.5">
-                <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="fullName">
-                  Token Standard
-                </label>
-                <div className="relative z-20 bg-white dark:bg-form-input">
-                  <select className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
-                    <option value="">ERC20</option>
-                    {/* <option value="">ERC 721 (NFT)</option>
-                    <option value="">ERC 1151</option> */}
-                  </select>
-                  </div>
-              </div>
-
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full sm:w-1/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="fullName"
-                      >
-                        Token Name
-                      </label>
-                      <div className="relative">
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="Name"
-                          id="Name"
-                          placeholder="MyToken"
-                          onChange={(e) => setTokenName(e.target.value)}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="w-full sm:w-1/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      >
-                        Token Symbol
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="Symbol"
-                        id="symbol"
-                        placeholder="Symbol"
-                        onChange={(e) => setTokenSymbol(e.target.value)}
-                      />
-                    </div>
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="productName"
+                    >
+                      Product Name
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="productName"
+                      id="productName"
+                      placeholder="Product Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
                   </div>
 
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="number"
+                      htmlFor="productDescription"
                     >
-                      Initial Supply
+                      Description
                     </label>
-                    <div className="relative">
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="number"
-                        name="supply"
-                        id="supply"
-                        placeholder="10000"
-                        onChange={(e) => setTokenSupply(e.target.value)}
-                      />
-                    </div>
+                    <textarea
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      name="productDescription"
+                      id="productDescription"
+                      placeholder="Product Description"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    ></textarea>
                   </div>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="productPrice"
+                    >
+                      Price
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="number"
+                      name="productPrice"
+                      id="productPrice"
+                      placeholder="Price"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="productQuantity"
+                    >
+                      Quantity
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="number"
+                      name="productQuantity"
+                      id="productQuantity"
+                      placeholder="Quantity"
+                      value={quantity}
+                      onChange={(e) => setQuantity(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="ipfsLink"
+                    >
+                      IPFS Link
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="ipfsLink"
+                      id="ipfsLink"
+                      placeholder="IPFS Link"
+                      value={ipfsLink}
+                      onChange={(e) => setIpfsLink(e.target.value)}
+                    />
+                  </div>
+
+                  {/* <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="soldQuantity"
+                    >
+                      Sold Quantity
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="number"
+                      name="soldQuantity"
+                      id="soldQuantity"
+                      placeholder="Sold Quantity"
+                      value={sold}
+                      onChange={(e) => setSold(e.target.value)}
+                    />
+                  </div> */}
 
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
+                      type="reset"
                     >
                       Reset
                     </button>
                     <button
                       className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
                       type="submit"
-                      onClick={mintToken}
                     >
-                      Mint
+                      Add Product
                     </button>
                   </div>
                 </form>
@@ -148,17 +187,17 @@ const NewToken = (props) => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                🗿 ChadPod : never gonna give you up
+                  🗿 MetaMart : Your own no-code market in Metaverse
                 </h3>
               </div>
               <div className="p-7">
-              😯 Create your own Token on the Mode sidechain <Link to={"https://www.mode.network/"}>(🔗know more)</Link> easily without any coding hassles.
-               <br/><br/>
-               😍 Mode has implemented Optimism's Bedrock upgrade which has significantly reduced the fees to be over 95% less than Ethereum. 
-                <br/><br/>
-               🤑 You will earn a share of the network Sequencer fees whenever your token is used in a transaction. <Link to={"https://docs.mode.network/explanation/sequencer-fee-sharing"}>(🔗know more)</Link>
-               <br/><br/>
-               ✳️ SFS registration NFT will be minted automatically to your address.
+                😯 Create your own market on Metaverse easily without any coding hassle.
+                <br /><br />
+                😍 MetaMart is powered by Areon Network for quick payments and low gas fees!
+                <br /><br />
+                🤑 Take your market to next level by adding 3D models of your products.
+                <br /><br />
+                ✳️ Increase your sales to international customers by accepting crypto payments.
               </div>
             </div>
           </div>

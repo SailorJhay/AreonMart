@@ -1,211 +1,163 @@
 import Breadcrumb from '../components/Breadcrumb';
-import fireToast from '../hooks/fireToast';
-import { useState,useEffect } from "react";
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
 const EditToken = (props) => {
-  const [selectedTokenAddress, setSelectedTokenAddress] = useState();
-  const [mytoken, setMytoken] = useState([]);
-  const [airdropAccounts, setAirdropAccounts] = useState("");
-  const [airdropAmount, setAirdropAmount] = useState(0);
-  const [mintAmount, setMintAmount] = useState(0);
-  const [burnAmount, setBurnAmount] = useState(0);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
 
-  const loadData = async () => {
-    const factoryContract = props.factoryContract;
-    const mytoken = await factoryContract.userData(props.account);
-    setMytoken(mytoken);
-    setSelectedTokenAddress(mytoken[0]);
-  };
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, []);
 
-  const mint = async () => {
-    const tokenContract = props.tokenContract;
-    const selectedToken = await tokenContract.attach(selectedTokenAddress);
-    await selectedToken.mintmore(mintAmount);
-  }
-
-  const burn = async () => {
-    const tokenContract = props.tokenContract;
-    const selectedToken = await tokenContract.attach(selectedTokenAddress);
-    await selectedToken.burn(burnAmount);
-  }
-
-  const airdrop = async () => {
-    const tokenContract = props.tokenContract;
-    const selectedToken = await tokenContract.attach(selectedTokenAddress);
-    const airdroplist = airdropAccounts.split("\n");
-    await selectedToken.airdrop(airdroplist, airdropAmount);
-  }
+  // const fetchProducts = async () => {
+  //   try {
+  //     // Fetch list of products from the contract
+  //     const products = await props.contract.getProducts();
+  //     setProducts(products);
+  //   } catch (error) {
+  //     console.error('Error fetching products:', error);
+  //   }
+  // };
 
   useEffect(() => {
-    loadData();
+    // Simulated fetchProducts function for testing
+    const fetchProducts = async () => {
+      const dummyProducts = [
+        { id: 1, name: 'Product 1', description: 'Description 1', price: '10', quantity: '100' },
+        { id: 2, name: 'Product 2', description: 'Description 2', price: '20', quantity: '200' },
+        { id: 3, name: 'Product 3', description: 'Description 3', price: '30', quantity: '300' }
+      ];
+      setProducts(dummyProducts);
+    };
+
+    fetchProducts();
   }, []);
+
+  const handleProductChange = (productId) => {
+    // Parse productId to integer
+    productId = parseInt(productId);
+    // Find the selected product based on productId
+    const selected = products.find(product => product.id === productId);
+    if (selected) {
+      // Populate fields with selected product data
+      setSelectedProduct(selected);
+      setName(selected.name);
+      setDescription(selected.description);
+      setPrice(selected.price);
+      setQuantity(selected.quantity);
+    }
+    else {
+      setSelectedProduct(null);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Call contract method to update product details
+      await props.contract.updateProduct(selectedProduct.id, name, description, price, quantity);
+    } catch (error) {
+      console.error('Error updating product:', error);
+    }
+  };
 
   return (
     <>
       <div className="mx-auto max-w-270">
-        <Breadcrumb pageName="Edit Areon" />
+        <Breadcrumb pageName="Edit Product" />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
-
-          <div className="relative z-20 bg-white dark:bg-form-input">
-                  <select className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
-                    { mytoken.map((token,_index) => {
-                      return <option value={token}>{token}</option>
-                    })}
-                  </select>
-          </div><br/>
-
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                🪂 Transfer / Airdrop
-                </h3>
-              </div>
-              
-              <div className="p-7">
-                
-
-             
-                  <div className="mb-5.5">
-
-                  <div className='pb-6'>
-                <label className="mb-3 block text-black dark:text-white">
-                  Account Address
-                </label>
-                <textarea
-                  rows={6}
-                  onChange={(e) => setAirdropAccounts(e.target.value)}
-                  placeholder="one address per line"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                ></textarea>
-              </div>
-              
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="number"
-                    >
-                      Tokens to Send
-                    </label>
-                    <div className="relative">
-                      <input
-                        onChange={(e) => setAirdropAmount(e.target.value)}
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="number"
-                        name="supply"
-                        id="supply"
-                        placeholder="10000"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
-                      onClick={airdrop}
-                    >
-                      Send
-                    </button>
-                  </div>
-              </div>
-            </div> <br/>
-
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                💎 Increase Supply
+                  🚀 Edit Your Product
                 </h3>
               </div>
-              
-              <div className="p-7">
-                
-             
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="number"
-                    >
-                      Mint More Areons
-                    </label>
-                    <div className="relative">
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="number"
-                        name="supply"
-                        id="supply"
-                        placeholder="10000"
-                        onChange={(e) => setMintAmount(e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
-                      onClick={mint}
-                    >
-                      Mint
-                    </button>
-                  </div>
-              </div>
-            </div>
-
-                      <br/>
-
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                🔥 Decrease Supply
-                </h3>
-              </div>
-              
-              <div className="p-7">
-                
-             
+
+                <form onSubmit={handleSubmit}>
                   <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="number"
-                    >
-                      Burn Areons
-                    </label>
-                    <div className="relative">
+                    <label htmlFor="productSelect" className="block text-sm font-medium text-black dark:text-white">Select Product</label>
+                    <select id="productSelect" value={selectedProduct ? selectedProduct.id : ""} onChange={(e) => handleProductChange(e.target.value)} className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
+                      <option value="">Select a Product</option>
+                      {products.map(product => (
+                        <option key={product.id} value={product.id}>{product.name}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {selectedProduct && (
+                    <><div className="mb-5.5">
+                      <label htmlFor="productName" className="block text-sm font-medium text-black dark:text-white">Product Name</label>
                       <input
+                        id="productName"
+                        type="text"
                         className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="number"
-                        name="supply"
-                        id="supply"
-                        placeholder="10000"
-                        onChange={(e) => setBurnAmount(e.target.value)}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                       />
                     </div>
-                  </div>
 
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
-                      onClick={burn}
-                    >
-                      Burn
-                    </button>
-                  </div>
+                      <div className="mb-5.5">
+                        <label htmlFor="productDescription" className="block text-sm font-medium text-black dark:text-white">Description</label>
+                        <textarea
+                          id="productDescription"
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="mb-5.5">
+                        <label htmlFor="productPrice" className="block text-sm font-medium text-black dark:text-white">Price</label>
+                        <input
+                          id="productPrice"
+                          type="number"
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          value={price}
+                          onChange={(e) => setPrice(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="mb-5.5">
+                        <label htmlFor="productQuantity" className="block text-sm font-medium text-black dark:text-white">Quantity</label>
+                        <input
+                          id="productQuantity"
+                          type="number"
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          value={quantity}
+                          onChange={(e) => setQuantity(e.target.value)}
+                        />
+                      </div>
+                      <button type="submit" className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1">Update Product</button>
+                    </>
+                  )}
+
+                </form>
               </div>
             </div>
-
           </div>
           <div className="col-span-5 xl:col-span-2">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                🗿 ChadPod : never gonna let you down
+                  🗿 MetaMart : Your own no-code market in Metaverse
                 </h3>
               </div>
               <div className="p-7">
-              😯 Create your own Token on the Mode sidechain <Link to={"https://www.mode.network/"}>(🔗know more)</Link> easily without any coding hassles.
-               <br/><br/>
-               😍 Mode has implemented Optimism's Bedrock upgrade which has significantly reduced the fees to be over 95% less than Ethereum. 
-                <br/><br/>
-               🤑 You will earn a share of the network Sequencer fees whenever your token is used in a transaction. <Link to={"https://docs.mode.network/explanation/sequencer-fee-sharing"}>(🔗know more)</Link>
+                😯 Create your own market on Metaverse easily without any coding hassle.
+                <br /><br />
+                😍 MetaMart is powered by Areon Network for quick payments and low gas fees!
+                <br /><br />
+                🤑 Take your market to next level by adding 3D models of your products.
+                <br /><br />
+                ✳️ Increase your sales to international customers by accepting crypto payments.
               </div>
             </div>
           </div>

@@ -28,8 +28,8 @@ const TableThree = (props) => {
           </thead>
           <tbody>
 
-            { tokens.map((token, index) => (
-                <tr>
+            {tokens.map((token, index) => (
+              <tr>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
                     {token[7]} ({token[8]})
@@ -40,27 +40,27 @@ const TableThree = (props) => {
                   <p className="text-black dark:text-white">{token[4]}</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <p className="text-black dark:text-white">{token[2].toString()}</p>
+                  <p className="text-black dark:text-white">{token[2].toString()}</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <p className="text-black dark:text-white">{token[3].toString()}</p>
-  
+                  <p className="text-black dark:text-white">{token[3].toString()}</p>
+
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                   <Link className="hover:text-primary"
-                  to= {'/profile?id='+ (parseInt(index)+1).toString()}
-                   >
-                   <p className="inline-flex rounded-full bg-success bg-opacity-10 py-1 px-3 text-sm font-medium text-success">
-                    BUY
-                  </p>
+                    <Link className="hover:text-primary"
+                      to={'/profile?id=' + (parseInt(index) + 1).toString()}
+                    >
+                      <p className="inline-flex rounded-full bg-success bg-opacity-10 py-1 px-3 text-sm font-medium text-success">
+                        BUY
+                      </p>
                     </Link>
                   </div>
                 </td>
               </tr>
-              ))}
-            
-    
+            ))}
+
+
           </tbody>
         </table>
       </div>
