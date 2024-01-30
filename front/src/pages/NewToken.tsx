@@ -6,7 +6,9 @@ import { ethers } from 'ethers';
 
 const NewToken = (props) => {
   const factoryContract = props["factoryContract"];
-  console.log(factoryContract);
+  const retailerContract = props["retailerContract"];
+  console.log("new token factoryContract ", factoryContract);
+  console.log("new token retailerContract ", retailerContract);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
