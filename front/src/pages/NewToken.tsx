@@ -6,9 +6,9 @@ import { ethers } from 'ethers';
 
 const NewToken = (props) => {
   const factoryContract = props["factoryContract"];
-  const retailerContract = props["retailerContract"];
-  console.log("new token factoryContract ", factoryContract);
-  console.log("new token retailerContract ", retailerContract);
+  const marketContract = props["marketContract"];
+  const account = props["account"];
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -21,12 +21,14 @@ const NewToken = (props) => {
 
     try {
       // Ensure the factoryContract is available
-      if (!factoryContract) {
-        throw new Error('Factory contract not available');
+      if (!marketContract) {
+        throw new Error('Market contract not available');
       }
 
       // Call the addProduct function with user-provided parameters
-      const tx = await factoryContract.addProduct(name, price, quantity, ipfsLink, description);
+      // convert price to int
+      const tx = await marketContract.addProduct(name, parseInt(price), parseInt(quantity), ipfsLink);
+      // const tx = await marketContract.addProduct(name, price, quantity, ipfsLink, description);
       const receipt = await tx.wait();
 
       // Check the transaction receipt for success or failure

@@ -3,6 +3,11 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const EditToken = (props) => {
+
+  const factoryContract = props["factoryContract"];
+  const marketContract = props["marketContract"];
+  const account = props["account"];
+
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
@@ -10,33 +15,34 @@ const EditToken = (props) => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
 
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
-
-  // const fetchProducts = async () => {
-  //   try {
-  //     // Fetch list of products from the contract
-  //     const products = await props.contract.getProducts();
-  //     setProducts(products);
-  //   } catch (error) {
-  //     console.error('Error fetching products:', error);
-  //   }
-  // };
-
   useEffect(() => {
-    // Simulated fetchProducts function for testing
-    const fetchProducts = async () => {
-      const dummyProducts = [
-        { id: 1, name: 'Product 1', description: 'Description 1', price: '10', quantity: '100' },
-        { id: 2, name: 'Product 2', description: 'Description 2', price: '20', quantity: '200' },
-        { id: 3, name: 'Product 3', description: 'Description 3', price: '30', quantity: '300' }
-      ];
-      setProducts(dummyProducts);
-    };
-
     fetchProducts();
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      // Fetch list of products from the contract
+      const products = await marketContract.getProducts();
+      setProducts(products);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  console.log("products ", products)
+  // useEffect(() => {
+  //   // Simulated fetchProducts function for testing
+  //   const fetchProducts = async () => {
+  //     const dummyProducts = [
+  //       { id: 1, name: 'Product 1', description: 'Description 1', price: '10', quantity: '100' },
+  //       { id: 2, name: 'Product 2', description: 'Description 2', price: '20', quantity: '200' },
+  //       { id: 3, name: 'Product 3', description: 'Description 3', price: '30', quantity: '300' }
+  //     ];
+  //     setProducts(dummyProducts);
+  //   };
+
+  //   fetchProducts();
+  // }, []);
 
   const handleProductChange = (productId) => {
     // Parse productId to integer
