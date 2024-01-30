@@ -8,7 +8,7 @@ const CardThree = (props) => {
           <h4 className="text-title-md font-bold text-black dark:text-white">
             {props.val}
           </h4>
-          <span className="text-sm font-medium">SFS Balance</span>
+          <span className="text-sm font-medium">Happy Customers</span>
         </div>
       </div>
     </div>

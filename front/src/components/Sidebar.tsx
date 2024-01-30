@@ -58,14 +58,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to="/" className="text-title-lg font-bold text-white">
-          🏝️ MetaMart 
+          🏝️ MetaMart
         </NavLink>
 
         <button
@@ -112,15 +111,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   return (
                     <React.Fragment>
                       <NavLink
-                         to="/"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/' ||
-                            pathname.includes('dashboard')) &&
+                        to="/"
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                          pathname.includes('dashboard')) &&
                           'bg-graydark dark:bg-meta-4'
-                        }`}
+                          }`}
                       >
-                       🚀
-                        ChadBoard  
+                        🚀
+                        Dashboard
                       </NavLink>
                     </React.Fragment>
                   );
@@ -128,14 +126,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
               {/* <!-- Menu Item Dashboard --> */}
 
-               {/* <!-- Menu Item NewToken --> */}
-               <li>
+              {/* <!-- Menu Item NewToken --> */}
+              <li>
                 <NavLink
                   to="/newToken"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('newToken') &&
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('newToken') &&
                     'bg-graydark dark:bg-meta-4'
-                  }`}
+                    }`}
                 >
                   ➕
                   Areon Factory
@@ -147,12 +144,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/editToken"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('editToken') &&
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('editToken') &&
                     'bg-graydark dark:bg-meta-4'
-                  }`}
+                    }`}
                 >
-                 ⚙️ Areon Garage
+                  ⚙️ Areon Garage
                 </NavLink>
               </li>
               {/* <!-- Menu Item EditToken --> */}
@@ -161,27 +157,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/marketplace"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('marketplace') && 'bg-graydark dark:bg-meta-4'
-                  }`}
-                > 
-                  🏪 Marketplace
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('marketplace') && 'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  🏪 Areon Market
                 </NavLink>
               </li>
               {/* <!-- Menu Item Market --> */}
 
-               {/* <!-- Menu Item sfs --> */}
-               <li>
-                <NavLink
-                  to="/sfs"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('sfs') && 'bg-graydark dark:bg-meta-4'
-                  }`}
-                > 
-                  🐸 SFS Manager
-                </NavLink>
-              </li>
-              {/* <!-- Menu Item sfs --> */}
+
 
             </ul>
           </div>

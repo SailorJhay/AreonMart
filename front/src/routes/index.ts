@@ -2,11 +2,11 @@ import { lazy } from 'react';
 import NewToken from '../pages/NewToken';
 import EditToken from '../pages/EditTokens';
 
-const SFSManager = lazy(() => import('../pages/SFSManager'));
 const Chart = lazy(() => import('../pages/Chart'));
 const FormElements = lazy(() => import('../pages/Form/FormElements'));
 const FormLayout = lazy(() => import('../pages/Form/FormLayout'));
 const Profile = lazy(() => import('../pages/Profile'));
+const Market = lazy(() => import('../pages/Market'));
 const MarketPlace = lazy(() => import('../pages/MarketPlace'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
@@ -18,15 +18,16 @@ const coreRoutes = [
     component: EditToken,
     reqs: ['factory'],
   },
-  {
-    path: '/sfs',
-    title: 'SFS Manager',
-    component: SFSManager,
-  },
+  
   {
     path: '/profile',
     title: 'Profile',
     component: Profile,
+  },
+  {
+    path: '/market',
+    title: 'Market',
+    component: Market,
   },
   {
     path: '/forms/form-elements',

@@ -8,7 +8,7 @@ const CardTwo = (props) => {
           <h4 className="text-title-md font-bold text-black dark:text-white">
            {props.val}
           </h4>
-          <span className="text-sm font-medium">Tokens Listed</span>
+          <span className="text-sm font-medium">Products Listed</span>
         </div>
       </div>
     </div>

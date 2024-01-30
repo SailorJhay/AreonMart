@@ -9,7 +9,7 @@ const CardOne = (props) => {
           <h4 className="text-title-md font-bold text-black dark:text-white">
             {props.val}
           </h4>
-          <span className="text-sm font-medium">Tokens Created</span>
+          <span className="text-sm font-medium">Product Inventory</span>
         </div>
       </div>
     </div>

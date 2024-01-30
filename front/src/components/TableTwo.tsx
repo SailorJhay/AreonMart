@@ -6,11 +6,11 @@ import ProductFour from '../images/product/product-04.png';
 const TableTwo = () => {
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="py-6 px-4 md:px-6 xl:px-7.5">
+      {/* <div className="py-6 px-4 md:px-6 xl:px-7.5">
         <h4 className="text-xl font-semibold text-black dark:text-white">
-          Listed Tokens
+          🐦  Product Inventory
         </h4>
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
         <div className="col-span-3 flex items-center">
@@ -54,6 +54,7 @@ const TableTwo = () => {
           <p className="text-sm text-meta-3">$45</p>
         </div>
       </div>
+
       <div className="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
         <div className="col-span-3 flex items-center">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -76,6 +77,7 @@ const TableTwo = () => {
           <p className="text-sm text-meta-3">$125</p>
         </div>
       </div>
+
       <div className="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
         <div className="col-span-3 flex items-center">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -100,6 +102,7 @@ const TableTwo = () => {
           <p className="text-sm text-meta-3">$247</p>
         </div>
       </div>
+
       <div className="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
         <div className="col-span-3 flex items-center">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">

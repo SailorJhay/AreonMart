@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-const TableThree = (props) => {
+const TableFour = (props) => {
   const tokens = props.val;
   const total = props.total;
-  const [widthdrawAmount , setWidthdrawAmount] = useState(0);
+  const [widthdrawAmount, setWidthdrawAmount] = useState(0);
 
   const widthdraw = async (id) => {
     const sfsContract = props.sfs;
-    await sfsContract.withdraw(id, props.account ,widthdrawAmount);
+    await sfsContract.withdraw(id, props.account, widthdrawAmount);
   }
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -34,11 +34,11 @@ const TableThree = (props) => {
           </thead>
           <tbody>
 
-            { tokens.map((token, index) => (
-                <tr>
+            {tokens.map((token, index) => (
+              <tr>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
-                    
+
                   </h5>
                   <p className="text-sm">{token['address']}</p>
                 </td>
@@ -46,34 +46,34 @@ const TableThree = (props) => {
                   <p className="text-black dark:text-white">{token['sfs_id']}</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <p className="text-black dark:text-white">{token['sfs_income']}</p>
+                  <p className="text-black dark:text-white">{token['sfs_income']}</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <p className="text-black dark:text-white"></p>
-                  {((parseInt(token['sfs_income'])/parseInt(total))*100).toString()}
+                  <p className="text-black dark:text-white"></p>
+                  {((parseInt(token['sfs_income']) / parseInt(total)) * 100).toString()}
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
 
-                  <input type="number" 
-                  className="border border-stroke rounded-md px-2 py-1 text-sm text-black" 
-                  placeholder="Enter amount" 
-                  onChange={(e) => setWidthdrawAmount(e.target.value)}
-                  />
-                  <br/>
-                   <button className="hover:text-primary"
-                    onClick={() => widthdraw(token['sfs_id'])}
-                   >
-                   <p className="inline-flex rounded-full bg-success bg-opacity-10 py-1 px-3 text-sm font-medium text-success">
-                    Withdraw
-                  </p>
+                    <input type="number"
+                      className="border border-stroke rounded-md px-2 py-1 text-sm text-black"
+                      placeholder="Enter amount"
+                      onChange={(e) => setWidthdrawAmount(e.target.value)}
+                    />
+                    <br />
+                    <button className="hover:text-primary"
+                      onClick={() => widthdraw(token['sfs_id'])}
+                    >
+                      <p className="inline-flex rounded-full bg-success bg-opacity-10 py-1 px-3 text-sm font-medium text-success">
+                        Withdraw
+                      </p>
                     </button>
                   </div>
                 </td>
               </tr>
-              ))}
-            
-    
+            ))}
+
+
           </tbody>
         </table>
       </div>
@@ -81,4 +81,4 @@ const TableThree = (props) => {
   );
 };
 
-export default TableThree;
+export default TableFour;
