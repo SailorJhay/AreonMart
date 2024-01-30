@@ -9,13 +9,13 @@ const hre = require("hardhat");
 async function main() {
 
 
-  const retailerContract = await hre.ethers.deployContract("Retailer");
-  await retailerContract.waitForDeployment();
+  // const retailerContract = await hre.ethers.deployContract("Retailer");
+  // await retailerContract.waitForDeployment();
 
-  console.log(
-   "Retailer Contract Address:",
-    retailerContract.target
-  );
+  // console.log(
+  //  "Retailer Contract Address:",
+  //   retailerContract.target
+  // );
 
   // // Add constructor arguments here
   // // name,desc
@@ -28,13 +28,21 @@ async function main() {
   //     marketplaceContract.target
   //   );
 
-  const factoryContract = await hre.ethers.deployContract("MarketPlaceFactory");
-  await factoryContract.waitForDeployment();
+  // const factoryContract = await hre.ethers.deployContract("MarketPlaceFactory");
+  // await factoryContract.waitForDeployment();
 
-  console.log(
-    "Factory Contract Address:",
-      factoryContract.target
-    );
+  // console.log(
+  //   "Factory Contract Address:",
+  //     factoryContract.target
+  //   );
+
+  // const marketplaceContract = await hre.ethers.getContractAt("MarketPlace",factoryContract.target);
+  // await marketplaceContract.waitForDeployment();
+
+  // console.log(
+  //   "Marketplace Contract Address:",
+  //     marketplaceContract.target
+  //   );
 
 
 }
