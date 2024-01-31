@@ -28,15 +28,11 @@ const EditToken = (props) => {
     try {
       // Fetch list of products from the contract
       const products = await marketContract.getProducts();
-      console.log("products ", products)
-      console.log("marketContract ", marketContract)
       setProducts(products);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
-
-  console.log("products ", products)
 
   const handleProductChange = (productId) => {
     productId = parseInt(productId);
