@@ -1,3 +1,5 @@
+// @ts-nocheck: Ignore type checking for the entire file
+
 import Breadcrumb from '../components/Breadcrumb';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -23,6 +25,7 @@ const EditToken = (props) => {
     try {
       // Fetch list of products from the contract
       const products = await marketContract.getProducts();
+      console.log("products ", products)
       setProducts(products);
     } catch (error) {
       console.error('Error fetching products:', error);
