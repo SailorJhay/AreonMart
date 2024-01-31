@@ -65,7 +65,7 @@ const Header = (props: {
           <div className="relative">
             <button
               className="inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-              onClick={() => window.location.href = `/market=${props.val}`}
+              onClick={() => window.location.href = `/market=${props.market}`}
             >Go to your MetaMart</button>
           </div>
         </div>

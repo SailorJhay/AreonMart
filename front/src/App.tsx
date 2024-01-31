@@ -18,6 +18,7 @@ function App() {
   const [factoryContract, setFactoryContract] = useState<any>(null);
   const [isRegisteredRetailer, setIsRegisteredRetailer] = useState<boolean>(false);
   const [marketContract, setMarketContract] = useState<any>(null);
+  const [myMarketAddress, setMyMarketAddress] = useState<string>('');
 
   const web3Handler = async () => {
     // Use Mist/MetaMask's provider
@@ -47,45 +48,32 @@ function App() {
       const factoryContract = new ethers.Contract(ContractAddress.MarketPlaceFactory, Factory.abi, signer)
       setFactoryContract(factoryContract);
 
-      console.log("Factory Contract ", factoryContract)
-      console.log("Factory: isRetailer ", factoryContract.isRetailer(account))
-      console.log(await factoryContract.isRetailer(account))
-
       let isRetailer = await factoryContract.isRetailer(account)
-      console.log("isRetailer ", isRetailer, isRetailer == false ? "false" : "true")
 
       if (isRetailer == true) {
-        console.log("is retailer", account)
         setIsRegisteredRetailer(true);
 
         const marketContractAddress = await factoryContract.getRetailerContract(account)
         const marketContract_ = new ethers.Contract(marketContractAddress, Market.abi, signer)
         setMarketContract(marketContract_);
-
-        console.log("marketContractAddress ", marketContractAddress)
+        setMyMarketAddress(marketContractAddress);
       }
 
     } catch (error) {
       console.error('Error loading contracts:', error);
-      // Handle the error (e.g., show a message to the user)
     }
   };
 
   useEffect(() => {
     web3Handler();
-    // retailerContract.addRetailer(account);
-    // console.log("retailerContract.getRetailerCount() ", retailerContract.getRetailerCount());
   }, []); // Run once on component mount
 
-  // console.log("account ", account)
-  // console.log("factoryContract ", factoryContract)
-  // console.log("retailerContract ", retailerContract)
   return (
     <>
       {
         isRegisteredRetailer ?
           (<Routes>
-            <Route element={<DefaultLayout val={account} />}>
+            <Route element={<DefaultLayout val={account} market={myMarketAddress} />}>
               {account && <Route index element={<Dashboard {...{
                 'factoryContract': factoryContract,
                 'account': account,
@@ -101,19 +89,14 @@ function App() {
                         'factoryContract': factoryContract,
                         'account': account,
                         'marketContract': marketContract,
-
                       }} />
                     </Suspense>
                   }
-                // pass props
-                // element={<route.component {...props} />}
                 />
               ))}
             </Route>
           </Routes>) :
           (
-            // Create a button a the center of the page to register as a retailer
-
             <div className="flex flex-col items-center justify-center h-screen">
               <button
                 className="px-8 py-3 font-medium rounded-md
@@ -123,8 +106,6 @@ function App() {
                     factoryContract.getRetailerContract(account).then((marketContractAddress) => {
                       const marketContract_ = new ethers.Contract(marketContractAddress, Market.abi, signer)
                       setMarketContract(marketContract_);
-
-                      console.log("marketContractAddress ", marketContractAddress)
                     })
                     setIsRegisteredRetailer(true);
                   })
