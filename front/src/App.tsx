@@ -1,5 +1,3 @@
-// @ts-nocheck: Ignore type checking for the entire file
-
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ethers } from 'ethers';
@@ -41,6 +39,7 @@ function App() {
       await web3Handler()
     })
     loadContracts(signer, accounts[0])
+
   };
 
   const loadContracts = async (signer, account) => {
@@ -48,6 +47,7 @@ function App() {
       // Get deployed copies of contracts
       const factoryContract = new ethers.Contract(ContractAddress.MarketPlaceFactory, Factory.abi, signer)
       setFactoryContract(factoryContract);
+      
       let isRetailer = await factoryContract.isRetailer(account)
 
       // console.log("Factory Contract ", factoryContract)

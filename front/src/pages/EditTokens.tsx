@@ -11,11 +11,14 @@ const EditToken = (props) => {
   const account = props["account"];
 
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedID, setSelectedID] = useState(0);
+
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [ipfsLink, setIpfsLink] = useState("");
 
   useEffect(() => {
     fetchProducts();
@@ -25,40 +28,24 @@ const EditToken = (props) => {
     try {
       // Fetch list of products from the contract
       const products = await marketContract.getProducts();
-      console.log("products ", products)
       setProducts(products);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
 
-  console.log("products ", products)
-  // useEffect(() => {
-  //   // Simulated fetchProducts function for testing
-  //   const fetchProducts = async () => {
-  //     const dummyProducts = [
-  //       { id: 1, name: 'Product 1', description: 'Description 1', price: '10', quantity: '100' },
-  //       { id: 2, name: 'Product 2', description: 'Description 2', price: '20', quantity: '200' },
-  //       { id: 3, name: 'Product 3', description: 'Description 3', price: '30', quantity: '300' }
-  //     ];
-  //     setProducts(dummyProducts);
-  //   };
-
-  //   fetchProducts();
-  // }, []);
-
   const handleProductChange = (productId) => {
-    // Parse productId to integer
     productId = parseInt(productId);
-    // Find the selected product based on productId
-    const selected = products.find(product => product.id === productId);
+    let selected = products[productId];
+    setSelectedID(productId);
+
     if (selected) {
-      // Populate fields with selected product data
       setSelectedProduct(selected);
       setName(selected.name);
       setDescription(selected.description);
       setPrice(selected.price);
       setQuantity(selected.quantity);
+      setIpfsLink(selected.ipfsLink);
     }
     else {
       setSelectedProduct(null);
@@ -69,7 +56,7 @@ const EditToken = (props) => {
     e.preventDefault();
     try {
       // Call contract method to update product details
-      await props.contract.updateProduct(selectedProduct.id, name, description, price, quantity);
+      await marketContract.editProduct(selectedID, name, description, price, quantity, ipfsLink);
     } catch (error) {
       console.error('Error updating product:', error);
     }
@@ -92,12 +79,18 @@ const EditToken = (props) => {
 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-5.5">
-                    <label htmlFor="productSelect" className="block text-sm font-medium text-black dark:text-white">Select Product</label>
+                    <label htmlFor="productSelect" className="mb-3 block text-sm font-medium text-black dark:text-white">Select Product</label>
                     <select id="productSelect" value={selectedProduct ? selectedProduct.id : ""} onChange={(e) => handleProductChange(e.target.value)} className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
                       <option value="">Select a Product</option>
-                      {products.map(product => (
-                        <option key={product.id} value={product.id}>{product.name}</option>
-                      ))}
+                      {
+                        products.map((prod, i) => {
+                          return (
+                            <option key={i} value={i}
+                              onClick={() => handleProductChange(i)}
+                            >{prod.name}</option>
+                          )
+                        })
+                      }
                     </select>
                   </div>
 
@@ -143,6 +136,25 @@ const EditToken = (props) => {
                           value={quantity}
                           onChange={(e) => setQuantity(e.target.value)}
                         />
+                      </div>
+
+                      <div className="mb-5.5">
+                        <label
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                          htmlFor="ipfsLink"
+                        >
+                          IPFS Link
+                        </label>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="text"
+                          name="ipfsLink"
+                          id="ipfsLink"
+                          placeholder="IPFS Link"
+                          value={ipfsLink}
+                          onChange={(e) => setIpfsLink(e.target.value)}
+                        />
+
                       </div>
                       <button type="submit" className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1">Update Product</button>
                     </>

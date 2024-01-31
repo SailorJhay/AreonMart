@@ -13,7 +13,7 @@ const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 
 const coreRoutes = [
   {
-    path: '/editToken',
+    path: '/editProduct',
     title: 'Edit Token',
     component: EditToken,
     reqs: ['factory'],
@@ -45,7 +45,7 @@ const coreRoutes = [
     component: MarketPlace,
   },
   {
-    path: '/newToken',
+    path: '/newProduct',
     title: 'New Token',
     component: NewToken,
   },

@@ -67,9 +67,6 @@ const NewToken = (props) => {
         throw new Error('Market contract not available');
       }
 
-      // const bigNumberIPFS = ethers.BigNumber.from(ipfsLink).toString();
-      console.log("ipfsLink ", ipfsLink)
-      console.log("datatype ", typeof (ipfsLink))
       const tx = await marketContract.addProduct(name, description, price, quantity, ipfsLink);
       const receipt = await tx.wait();
 

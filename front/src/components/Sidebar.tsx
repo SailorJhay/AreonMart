@@ -129,13 +129,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item NewToken --> */}
               <li>
                 <NavLink
-                  to="/newToken"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('newToken') &&
+                  to="/newProduct"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('newProduct') &&
                     'bg-graydark dark:bg-meta-4'
                     }`}
                 >
                   ➕
-                  Areon Factory
+                  Add Product
                 </NavLink>
               </li>
               {/* <!-- Menu Item NewToken --> */}
@@ -143,12 +143,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item EditToken --> */}
               <li>
                 <NavLink
-                  to="/editToken"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('editToken') &&
+                  to="/editProduct"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('editProduct') &&
                     'bg-graydark dark:bg-meta-4'
                     }`}
                 >
-                  ⚙️ Areon Garage
+                  ⚙️ Edit Product
                 </NavLink>
               </li>
               {/* <!-- Menu Item EditToken --> */}
@@ -160,7 +160,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('marketplace') && 'bg-graydark dark:bg-meta-4'
                     }`}
                 >
-                  🏪 Areon Market
+                  🏪 Inventory
                 </NavLink>
               </li>
               {/* <!-- Menu Item Market --> */}
