@@ -15,7 +15,7 @@ function Overlay() {
       <div className="dot" />
       <p className="hovertext">{text}</p>
       <p className="pricetext">{price}</p>
-      <p className="useraddress">👤 {user}</p>
+      <p className="useraddress">✅ {user}</p>
       <p className="desc" id="desc">
       💡{desc}
       </p>

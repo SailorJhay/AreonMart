@@ -1,11 +1,15 @@
 import { Canvas } from "@react-three/fiber"
-import { Loader, PointerLockControls, KeyboardControls , Text, Text3D , Html, PresentationControls, Stars } from "@react-three/drei"
+import { Loader, PointerLockControls, KeyboardControls , Text, PresentationControls, Stars } from "@react-three/drei"
 import { Debug, Physics } from "@react-three/rapier"
 import { Player } from "./Player"
 import { Model } from "./Showroom"
-import { Suspense } from "react"
+import { Suspense, useEffect } from "react"
 import { Billboard } from "@react-three/drei"
 import { Sky } from "@react-three/drei"
+import { useState } from "react"
+import { ethers } from "ethers"
+import Market from './contracts/MarketPlace.json';
+import { useSharedState } from './sharedState';
 
 // Controls: WASD + left click
 
@@ -52,6 +56,68 @@ export default function App() {
   const z = Math.sin(inclination);
 
   const sunPosition = ([x, y, z]);
+
+  const [account, setAccount] = useState('');
+  const [marketContract, setMarketContract] = useState(null);
+  const { user, setUser } = useSharedState();
+
+  const web3Handler = async () => {
+    // Use Mist/MetaMask's provider
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    setAccount(accounts[0]);
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    setAccount(accounts[0]);
+    setUser(String(accounts[0]))    // displaying user address
+
+    const signer = provider.getSigner();
+
+    window.ethereum.on('chainChanged', (chainId) => {
+      window.location.reload();
+    })
+
+    window.ethereum.on('accountsChanged', async function (accounts) {
+      setAccount(accounts[0])
+      setUser((account))  
+      await web3Handler()
+    })
+    loadContracts(signer, accounts[0])
+
+  };
+
+  const loadContracts = async (signer, account) => {
+    try {
+        const marketContract_ = await new ethers.Contract(address, Market.abi, signer)
+        console.log(marketContract_)
+        loadProducts(marketContract_)
+        setMarketContract(marketContract_)
+        console.log(marketContract)
+        
+    } catch (error) {
+      console.error('Error loading contracts:', error);
+      // Handle the error (e.g., show a message to the user)
+    }
+  };
+
+  const loadProducts = async (_marketContract) => {
+    console.log(_marketContract, "loadProducts")
+    try {
+      const products = await _marketContract.getProducts();
+      console.log(products)
+    } catch (error) {
+      console.error('Error loading products:', error);
+      // Handle the error (e.g., show a message to the user)
+    }
+  }
+
+  useEffect(() => {
+    // if (account) {
+    //   loadProducts()
+    // }
+  },[marketContract])
+
+  useEffect(() => {
+    web3Handler()
+  },[])
 
   return ( <>
 
