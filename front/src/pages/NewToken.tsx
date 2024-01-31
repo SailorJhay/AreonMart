@@ -10,6 +10,7 @@ import axios from 'axios';
 const NewToken = (props) => {
   const factoryContract = props["factoryContract"];
   const marketContract = props["marketContract"];
+  console.log("marketContract ", marketContract)
   const account = props["account"];
 
   const [glbFile, setGlbFile] = useState(null);
