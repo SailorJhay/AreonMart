@@ -1,3 +1,5 @@
+// @ts-nocheck: Ignore type checking for the entire file
+
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ethers } from 'ethers';

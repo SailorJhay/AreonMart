@@ -1,20 +1,62 @@
+// @ts-nocheck: Ignore type checking for the entire file
+
 import Breadcrumb from '../components/Breadcrumb';
 import fireToast from '../hooks/fireToast';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ethers } from 'ethers';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const NewToken = (props) => {
   const factoryContract = props["factoryContract"];
   const marketContract = props["marketContract"];
   const account = props["account"];
 
+  const [glbFile, setGlbFile] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [ipfsLink, setIpfsLink] = useState("");
-  // const [sold, setSold] = useState("");
+
+
+  const handleFileUpload = async (e) => {
+    try {
+      const file = e.target.files[0];
+      setGlbFile(file);
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const pinataMetadata = JSON.stringify({
+        name: file.name,
+      });
+      formData.append('pinataMetadata', pinataMetadata);
+
+      const pinataOptions = JSON.stringify({
+        cidVersion: 0,
+      });
+      formData.append('pinataOptions', pinataOptions);
+
+      const JWT = process.env.PINATA_JWT;
+
+      const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+        maxBodyLength: "Infinity",
+        headers: {
+          'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+          'Authorization': `Bearer ${JWT}`
+        }
+      });
+
+      if (res.data && res.data.IpfsHash) {
+        setIpfsLink(`https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}`);
+      } else {
+        console.error('Failed to get IPFS link');
+      }
+    } catch (error) {
+      console.error('Error uploading file to Pinata:', error);
+    }
+  };
 
   const addProduct = async (e) => {
     e.preventDefault();
@@ -25,16 +67,15 @@ const NewToken = (props) => {
         throw new Error('Market contract not available');
       }
 
-      // Call the addProduct function with user-provided parameters
-      // convert price to int
-      const tx = await marketContract.addProduct(name, parseInt(price), parseInt(quantity), ipfsLink);
-      // const tx = await marketContract.addProduct(name, price, quantity, ipfsLink, description);
+      // const bigNumberIPFS = ethers.BigNumber.from(ipfsLink).toString();
+      console.log("ipfsLink ", ipfsLink)
+      console.log("datatype ", typeof (ipfsLink))
+      const tx = await marketContract.addProduct(name, description, price, quantity, ipfsLink);
       const receipt = await tx.wait();
 
       // Check the transaction receipt for success or failure
       if (receipt.status === 1) {
         alert('Product Added Successfully!');
-        // You can perform additional actions upon successful addition, if needed
       } else {
         alert('Failed to Add Product');
       }
@@ -140,6 +181,10 @@ const NewToken = (props) => {
                     >
                       IPFS Link
                     </label>
+                    <div className="mb-5.5">
+                      <input type="file" onChange={handleFileUpload} />
+                      {ipfsLink && <p>IPFS Link: {ipfsLink}</p>}
+                    </div>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="text"
@@ -147,28 +192,11 @@ const NewToken = (props) => {
                       id="ipfsLink"
                       placeholder="IPFS Link"
                       value={ipfsLink}
-                      onChange={(e) => setIpfsLink(e.target.value)}
+                      // onChange={(e) => setIpfsLink(e.target.value)}
+                      readOnly
                     />
+
                   </div>
-
-                  {/* <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="soldQuantity"
-                    >
-                      Sold Quantity
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="number"
-                      name="soldQuantity"
-                      id="soldQuantity"
-                      placeholder="Sold Quantity"
-                      value={sold}
-                      onChange={(e) => setSold(e.target.value)}
-                    />
-                  </div> */}
-
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
