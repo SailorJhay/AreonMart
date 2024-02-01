@@ -1,8 +1,8 @@
 import { Canvas, useFrame } from "@react-three/fiber"
 import { Loader, PointerLockControls, KeyboardControls , Text, PresentationControls, Stars } from "@react-three/drei"
-import { Debug, Physics } from "@react-three/rapier"
+import { Debug, Physics, RigidBody } from "@react-three/rapier"
 import { Player } from "./Player"
-import { Model } from "./Showroom"
+import { Model } from "./Show2"
 import { Suspense, useEffect } from "react"
 import { Billboard } from "@react-three/drei"
 import { Sky } from "@react-three/drei"
@@ -19,7 +19,7 @@ import { useRef } from "react"
 const ProductModel = ({file}) => {
   console.log(file, "file")
   const gltf = useLoader(GLTFLoader, file)
-  return (<primitive object={gltf.scene} scale={2} />)
+  return (<primitive object={gltf.scene} scale={10} />)
 }
 
 function EquidistantPoints({ contract, products }) {
@@ -33,7 +33,7 @@ function EquidistantPoints({ contract, products }) {
     const angle = (i / numPoints) * Math.PI * 2;
     const z = Math.cos(angle) * 5;
     const x = Math.sin(angle) * 5;
-    const y = 0;
+    const y = 0.4;
     const mul = 3;
     points.push([x * mul, y * mul, z * mul]);
   }
@@ -48,6 +48,7 @@ function EquidistantPoints({ contract, products }) {
     <>
       {points.map((point, index) => (
         <PresentationControls key={index} snap={true} azimuth={[-Infinity, Infinity]} polar={[0, 0]}>
+          <RigidBody type="fixed"  >
           <EquidistantMesh
             position={point}
             index={index}
@@ -55,6 +56,7 @@ function EquidistantPoints({ contract, products }) {
             contract={contract}
             clear={clear}
           />
+          </RigidBody>
         </PresentationControls>
       ))}
     </>
@@ -201,9 +203,10 @@ export default function App() {
         <Physics>
             <Model/>
             <Player /> 
+            <EquidistantPoints products={products} contract={marketContract} />
+            {/* <Debug/> */}
         </Physics>
 
-        <EquidistantPoints products={products} contract={marketContract} />
         
         <PointerLockControls />
         <ambientLight intensity={0.1} />

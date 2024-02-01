@@ -4,7 +4,7 @@ const SharedStateContext = createContext();
 
 export const SharedStateProvider = ({ children }) => {
   const [text, setText] = useState('Hover over products to see details');
-  const [price, setPrice] = useState('0.004 ETH');
+  const [price, setPrice] = useState('');
   const [desc, setDesc] = useState('Product Details');
   const [user, setUser] = useState('0x4A...5538');
 
