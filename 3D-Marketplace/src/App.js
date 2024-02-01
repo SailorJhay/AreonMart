@@ -1,4 +1,4 @@
-import { Canvas } from "@react-three/fiber"
+import { Canvas, useFrame } from "@react-three/fiber"
 import { Loader, PointerLockControls, KeyboardControls , Text, PresentationControls, Stars } from "@react-three/drei"
 import { Debug, Physics } from "@react-three/rapier"
 import { Player } from "./Player"
@@ -13,6 +13,7 @@ import { useSharedState } from './sharedState';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useLoader } from '@react-three/fiber'
 import { BigNumber } from "ethers"
+import { useRef } from "react"
 // Controls: WASD + left click
 
 const ProductModel = ({file}) => {
@@ -21,58 +22,79 @@ const ProductModel = ({file}) => {
   return (<primitive object={gltf.scene} scale={2} />)
 }
 
-function EquidistantPoints({ contract, products }) {  
-  const { setPrice , setText , setDesc } = useSharedState();
-  console.log(contract, "Marketplace")
+function EquidistantPoints({ contract, products }) {
+  const { setPrice, setText, setDesc } = useSharedState();
+  console.log(contract, "Marketplace");
+
   const points = [];
   const numPoints = products.length;
+
   for (let i = 0; i < numPoints; i++) {
-      const angle = (i / numPoints) * Math.PI * 2;
-      const z = Math.cos(angle) * 5;
-      const x = Math.sin(angle) * 5;
-      const y = 1;
-      const mul = 3;
-      points.push([x * mul, y * mul, z * mul]);
+    const angle = (i / numPoints) * Math.PI * 2;
+    const z = Math.cos(angle) * 5;
+    const x = Math.sin(angle) * 5;
+    const y = 0;
+    const mul = 3;
+    points.push([x * mul, y * mul, z * mul]);
   }
 
-  function clear(){
-    setPrice('')
-    setText('')
-    setDesc('')
+  function clear() {
+    setPrice('');
+    setText('');
+    setDesc('');
   }
 
   return (
-      <>
-          {points.map((point, index) => (
-              <PresentationControls key={index} snap={true} >
-                <mesh position={point} onPointerEnter={(e) => {
-                    setPrice(BigNumber.from(products[index].price).toString())
-                    setText(products[index].name)
-                    setDesc(products[index].description)
-                    console.log("hi")
-                }}
-                onPointerLeave={(e) => clear()}
-                onClick={async (e) => {
-                  const productPrice = products[index].price; // Assuming price is in Ether
-                  const priceInWei = ethers.utils.parseUnits(productPrice.toString(), 'ether');
-        
-                  try {
-                    // Ensure that 'contract' is properly initialized and has the 'buyProduct' method
-                    const transaction = await contract.buyProduct(index, { value: productPrice });
-                    await transaction.wait();
-                    // Handle transaction confirmation
-                  } catch (error) {
-                    console.error("Transaction failed", error);
-                    // Handle transaction failure
-                  }}}>
-                  <ProductModel file={products[index].ipfsLink}
-                />
-                </mesh>
-              </PresentationControls>
-          ))}
-      </>
+    <>
+      {points.map((point, index) => (
+        <PresentationControls key={index} snap={true} azimuth={[-Infinity, Infinity]} polar={[0, 0]}>
+          <EquidistantMesh
+            position={point}
+            index={index}
+            product={products[index]}
+            contract={contract}
+            clear={clear}
+          />
+        </PresentationControls>
+      ))}
+    </>
   );
-};
+}
+
+function EquidistantMesh({ position, index, product, contract, clear }) {
+  const ref = useRef();
+  const { setPrice, setText, setDesc } = useSharedState();
+
+  useFrame(() => {
+    ref.current.rotation.y += 0.005;
+  });
+
+  return (
+    <mesh
+      position={position}
+      ref={ref}
+      onPointerEnter={(e) => {
+        setPrice(BigNumber.from(product.price).toString());
+        setText(product.name);
+        setDesc(product.description);
+      }}
+      onPointerLeave={(e) => clear()}
+      onClick={async (e) => {
+        const productPrice = product.price; // Assuming price is in Ether
+        setDesc("Buying...");
+        try {
+          const transaction = await contract.buyProduct(index, { value: productPrice });
+          await transaction.wait();
+        } catch (error) {
+          console.error("Transaction failed", error);
+          // Handle transaction failure
+        }
+      }}
+    >
+      <ProductModel file={product.ipfsLink} />
+    </mesh>
+  );
+}
 
 
 export default function App() {
@@ -97,6 +119,7 @@ export default function App() {
   const { user, setUser } = useSharedState();
   const [marketname, setMarketName] = useState("loading...")
   const [products, setProducts] = useState([])
+  const [marketdesc, setMarketDesc] = useState("loading...")
 
   const web3Handler = async () => {
     // Use Mist/MetaMask's provider
@@ -130,6 +153,7 @@ export default function App() {
         setMarketContract(marketContract_)
         setMarketName(await marketContract_.marketPlaceName())
         setProducts(await marketContract_.getProducts())
+        setMarketDesc(await marketContract_.marketPlaceDescription())
         
     } catch (error) {
       console.error('Error loading contracts:', error);
@@ -171,6 +195,7 @@ export default function App() {
       <Billboard follow={true} lockX={false} lockY={false}>
           <Text font="./Inter-Bold.woff" position={[0,5,0]} fontSize={0.75} color={namecolor}>🏪 {marketname}</Text>
           <Text font="./Inter-Bold.woff" position={[0,4,0]} fontSize={0.25} color="white">{address}</Text>
+          <Text font="./Inter-Regular.woff" position={[0,3,0]} fontSize={0.2} color="white">{marketdesc}</Text>
       </Billboard>
 
         <Physics>
