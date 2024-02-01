@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client"
 import { useSharedState } from "./sharedState"
 import "./styles.css"
 import App from "./App"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { SharedStateProvider } from "./sharedState"
 
 function Overlay() {
@@ -18,6 +17,7 @@ function Overlay() {
       <p className="useraddress">✅ {user}</p>
       <p className="desc" id="desc">
       💡{desc}
+      {desc && <> <br/>🛒 Click on the product to buy </>}
       </p>
       <App />      
     </>

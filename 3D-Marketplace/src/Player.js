@@ -43,7 +43,7 @@ export function Player(props) {
   })
   return (
     <>
-      <RigidBody  ref={ref} colliders={false}  mass={1} type="dynamic" enabledRotations={[false, false, false]}>
+      <RigidBody  ref={ref} colliders={false} position={[0,10,10]}  mass={1} type="dynamic" enabledRotations={[false, false, false]}>
         <CapsuleCollider args={[0.75, 0.5]} /> 
       </RigidBody>
 

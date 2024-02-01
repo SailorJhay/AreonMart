@@ -50,10 +50,6 @@ function App() {
       const factoryContract = new ethers.Contract(ContractAddress.MarketPlaceFactory, Factory.abi, signer)
       setFactoryContract(factoryContract);
 
-      console.log("Factory Contract ", factoryContract)
-      console.log("Factory: isRetailer ", factoryContract.isRetailer(account))
-      console.log(await factoryContract.isRetailer(account))
-
       let isRetailer = await factoryContract.isRetailer(account)
       console.log("isRetailer ", isRetailer, isRetailer == false ? "false" : "true")
 
