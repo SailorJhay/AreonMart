@@ -12,13 +12,12 @@ const frontVector = new THREE.Vector3()
 const sideVector = new THREE.Vector3()
 var step = new Audio('step.mp3');
 
-export function Player({ lerp = THREE.MathUtils.lerp }) {
+export function Player(props) {
   
   const ref = useRef()
   const rapier = useRapier()
   const { camera } = useThree()
   const [, get] = useKeyboardControls()
-  camera.lookAt( 0, 4, 0 );
   useFrame((state) => {
     const { forward, backward, left, right, jump } = get()
     const velocity = ref.current.linvel()
@@ -44,7 +43,7 @@ export function Player({ lerp = THREE.MathUtils.lerp }) {
   })
   return (
     <>
-      <RigidBody  ref={ref} colliders={false}  mass={1} type="dynamic" position={[0,10,0]} enabledRotations={[false, false, false]}>
+      <RigidBody  ref={ref} colliders={false}  mass={1} type="dynamic" enabledRotations={[false, false, false]}>
         <CapsuleCollider args={[0.75, 0.5]} /> 
       </RigidBody>
 

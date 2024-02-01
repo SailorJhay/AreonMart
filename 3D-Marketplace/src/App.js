@@ -10,12 +10,22 @@ import { useState } from "react"
 import { ethers } from "ethers"
 import Market from './contracts/MarketPlace.json';
 import { useSharedState } from './sharedState';
-
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { useLoader } from '@react-three/fiber'
+import { BigNumber } from "ethers"
 // Controls: WASD + left click
 
-const EquidistantPoints = ({ numPoints }) => {  
-  const points = [];
+const ProductModel = ({file}) => {
+  console.log(file, "file")
+  const gltf = useLoader(GLTFLoader, file)
+  return (<primitive object={gltf.scene} scale={2} />)
+}
 
+function EquidistantPoints({ contract, products }) {  
+  const { setPrice , setText , setDesc } = useSharedState();
+  console.log(contract, "Marketplace")
+  const points = [];
+  const numPoints = products.length;
   for (let i = 0; i < numPoints; i++) {
       const angle = (i / numPoints) * Math.PI * 2;
       const z = Math.cos(angle) * 5;
@@ -25,15 +35,40 @@ const EquidistantPoints = ({ numPoints }) => {
       points.push([x * mul, y * mul, z * mul]);
   }
 
+  function clear(){
+    setPrice('')
+    setText('')
+    setDesc('')
+  }
+
   return (
       <>
           {points.map((point, index) => (
-              <PresentationControls key={index} snap={true}>
-              <mesh position={point}>
-                  <boxGeometry args={[1, 1, 1]} />
-                  <meshBasicMaterial color="red" />
-              </mesh>
-          </PresentationControls>
+              <PresentationControls key={index} snap={true} >
+                <mesh position={point} onPointerEnter={(e) => {
+                    setPrice(BigNumber.from(products[index].price).toString())
+                    setText(products[index].name)
+                    setDesc(products[index].description)
+                    console.log("hi")
+                }}
+                onPointerLeave={(e) => clear()}
+                onClick={async (e) => {
+                  const productPrice = products[index].price; // Assuming price is in Ether
+                  const priceInWei = ethers.utils.parseUnits(productPrice.toString(), 'ether');
+        
+                  try {
+                    // Ensure that 'contract' is properly initialized and has the 'buyProduct' method
+                    const transaction = await contract.buyProduct(index, { value: productPrice });
+                    await transaction.wait();
+                    // Handle transaction confirmation
+                  } catch (error) {
+                    console.error("Transaction failed", error);
+                    // Handle transaction failure
+                  }}}>
+                  <ProductModel file={products[index].ipfsLink}
+                />
+                </mesh>
+              </PresentationControls>
           ))}
       </>
   );
@@ -60,6 +95,8 @@ export default function App() {
   const [account, setAccount] = useState('');
   const [marketContract, setMarketContract] = useState(null);
   const { user, setUser } = useSharedState();
+  const [marketname, setMarketName] = useState("loading...")
+  const [products, setProducts] = useState([])
 
   const web3Handler = async () => {
     // Use Mist/MetaMask's provider
@@ -86,11 +123,13 @@ export default function App() {
 
   const loadContracts = async (signer, account) => {
     try {
+        console.log(address, " address")
         const marketContract_ = await new ethers.Contract(address, Market.abi, signer)
         console.log(marketContract_)
         loadProducts(marketContract_)
         setMarketContract(marketContract_)
-        console.log(marketContract)
+        setMarketName(await marketContract_.marketPlaceName())
+        setProducts(await marketContract_.getProducts())
         
     } catch (error) {
       console.error('Error loading contracts:', error);
@@ -102,18 +141,12 @@ export default function App() {
     console.log(_marketContract, "loadProducts")
     try {
       const products = await _marketContract.getProducts();
-      console.log(products)
+      console.log("products" , products)
     } catch (error) {
       console.error('Error loading products:', error);
       // Handle the error (e.g., show a message to the user)
     }
   }
-
-  useEffect(() => {
-    // if (account) {
-    //   loadProducts()
-    // }
-  },[marketContract])
 
   useEffect(() => {
     web3Handler()
@@ -132,20 +165,20 @@ export default function App() {
        
       <Suspense>
       <Canvas camera={{ fov: 45 }} shadows>
-
         <Sky distance={450} sunPosition={sunPosition} inclination={0} azimuth={0.25}  />
         <Stars depth={100}/>
 
       <Billboard follow={true} lockX={false} lockY={false}>
-      <Text font="./Inter-Bold.woff" position={[0,5,0]} fontSize={0.75} color={namecolor}>🏪 AnshMart</Text>
-      <Text font="./Inter-Bold.woff" position={[0,4,0]} fontSize={0.25} color="white">{address}</Text>
+          <Text font="./Inter-Bold.woff" position={[0,5,0]} fontSize={0.75} color={namecolor}>🏪 {marketname}</Text>
+          <Text font="./Inter-Bold.woff" position={[0,4,0]} fontSize={0.25} color="white">{address}</Text>
       </Billboard>
 
         <Physics>
             <Model/>
             <Player /> 
-            <EquidistantPoints numPoints={5} />
         </Physics>
+
+        <EquidistantPoints products={products} contract={marketContract} />
         
         <PointerLockControls />
         <ambientLight intensity={0.1} />
