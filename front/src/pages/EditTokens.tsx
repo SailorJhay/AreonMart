@@ -28,15 +28,11 @@ const EditToken = (props) => {
     try {
       // Fetch list of products from the contract
       const products = await marketContract.getProducts();
-      console.log("products ", products)
-      console.log("marketContract ", marketContract)
       setProducts(products);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
-
-  console.log("products ", products)
 
   const handleProductChange = (productId) => {
     productId = parseInt(productId);
@@ -83,7 +79,7 @@ const EditToken = (props) => {
 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-5.5">
-                    <label htmlFor="productSelect" className="block text-sm font-medium text-black dark:text-white">Select Product</label>
+                    <label htmlFor="productSelect" className="mb-3 block text-sm font-medium text-black dark:text-white">Select Product</label>
                     <select id="productSelect" value={selectedProduct ? selectedProduct.id : ""} onChange={(e) => handleProductChange(e.target.value)} className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
                       <option value="">Select a Product</option>
                       {

@@ -10,7 +10,6 @@ import axios from 'axios';
 const NewToken = (props) => {
   const factoryContract = props["factoryContract"];
   const marketContract = props["marketContract"];
-  console.log("marketContract ", marketContract)
   const account = props["account"];
 
   const [glbFile, setGlbFile] = useState(null);
@@ -68,9 +67,6 @@ const NewToken = (props) => {
         throw new Error('Market contract not available');
       }
 
-      // const bigNumberIPFS = ethers.BigNumber.from(ipfsLink).toString();
-      console.log("ipfsLink ", ipfsLink)
-      console.log("datatype ", typeof (ipfsLink))
       const tx = await marketContract.addProduct(name, description, price, quantity, ipfsLink);
       const receipt = await tx.wait();
 
