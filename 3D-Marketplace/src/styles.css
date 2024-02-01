@@ -120,7 +120,7 @@ button {
 
 .hovertext {
   position: absolute;
-  bottom: 7%;
+  bottom: 9%;
   right: 7%;
   transition: all 0.5s;
   color: white;
@@ -152,7 +152,8 @@ button {
   right: 7%;
   transition: all 0.5s;
   color: rgb(39, 196, 86);
-  font-size: 18px;
+  /* padding: 1%; */
+  font-size: 29px;
   font-weight: bold;
   text-align: center;
   text-transform: uppercase;
