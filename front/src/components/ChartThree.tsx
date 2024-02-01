@@ -11,7 +11,7 @@ const options: ApexOptions = {
     type: 'donut',
   },
   colors: ['#10B981', '#375E83', '#259AE6', '#FFA70B'],
-  labels: ['Explorers', 'Shoppers', 'Gamers', 'Creators'],
+  labels: ['Sports', 'Sneakers', 'Formal', 'Casual'],
   legend: {
     show: true,
     position: 'bottom',
@@ -58,7 +58,7 @@ const ChartThree: React.FC = () => {
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
           <h5 className="text-xl font-semibold text-black dark:text-white">
-            Visitors Analytics
+            Product Analytics
           </h5>
         </div>
         <div>
@@ -110,7 +110,7 @@ const ChartThree: React.FC = () => {
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Explorers </span>
+              <span> Sports Shoes </span>
               <span> {state.series[0]}% </span>
             </p>
           </div>
@@ -119,7 +119,7 @@ const ChartThree: React.FC = () => {
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#6577F3]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Shoppers </span>
+              <span> Sneakers </span>
               <span> {state.series[1]}% </span>
             </p>
           </div>
@@ -128,7 +128,7 @@ const ChartThree: React.FC = () => {
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#8FD0EF]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Gamers </span>
+              <span> Formal Shoes </span>
               <span> {state.series[2]}% </span>
             </p>
           </div>
@@ -137,7 +137,7 @@ const ChartThree: React.FC = () => {
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#0FADCF]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Creators </span>
+              <span> Casual Shoes </span>
               <span> {state.series[3]}% </span>
             </p>
           </div>

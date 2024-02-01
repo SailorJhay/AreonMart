@@ -46,16 +46,16 @@ const DropdownUser = (props) => {
           <span className="block text-sm font-medium text-black dark:text-white">
             {props.val}
           </span>
-          <span className="block text-xs">Degenrate</span>
+          <span className="block text-xs">{props.marketName}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          <img src={UserOne} alt="User" className='rounded-full'/>
+          <img src={UserOne} alt="User" className='rounded-full' />
         </span>
 
       </Link>
 
-      
+
     </div>
   );
 };

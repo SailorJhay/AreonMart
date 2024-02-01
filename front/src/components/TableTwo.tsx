@@ -24,7 +24,7 @@ const TableTwo = (props) => {
         <div className="col-span-2 flex items-center">
           <p className="font-medium">Product Name</p>
         </div>
-        <div className="col-span-2 flex items-center">
+        <div className="col-span-3 flex items-center">
           <p className="font-medium">Description</p>
         </div>
         <div className="col-span-1 flex items-center">
@@ -43,7 +43,7 @@ const TableTwo = (props) => {
           <div className="col-span-2 flex items-center">
             <p className="text-sm text-black dark:text-white">{product.name}</p>
           </div>
-          <div className="col-span-2 flex items-center">
+          <div className="col-span-3 flex items-center">
             <p className="text-sm text-black dark:text-white">{product.description}</p>
           </div>
           <div className="col-span-1 flex items-center">

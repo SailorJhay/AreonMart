@@ -2,7 +2,7 @@ const CardOne = (props) => {
 
   return (
     <div className="rounded-sm border border-stroke bg-white py-6 px-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
-      <p style={{fontSize:"35px"}}>🪙</p>
+      <p style={{ fontSize: "35px" }}>📦</p>
 
       <div className="mt-4 flex items-end justify-between">
         <div>
