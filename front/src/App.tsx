@@ -1,5 +1,3 @@
-// @ts-nocheck: Ignore type checking for the entire file
-
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ethers } from 'ethers';
@@ -46,10 +44,6 @@ function App() {
       // Get deployed copies of contracts
       const factoryContract = new ethers.Contract(ContractAddress.MarketPlaceFactory, Factory.abi, signer)
       setFactoryContract(factoryContract);
-
-      console.log("Factory Contract ", factoryContract)
-      console.log("Factory: isRetailer ", factoryContract.isRetailer(account))
-      console.log(await factoryContract.isRetailer(account))
 
       let isRetailer = await factoryContract.isRetailer(account)
       console.log("isRetailer ", isRetailer, isRetailer == false ? "false" : "true")
