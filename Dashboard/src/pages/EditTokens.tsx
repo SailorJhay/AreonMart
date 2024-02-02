@@ -56,7 +56,17 @@ const EditToken = (props) => {
     e.preventDefault();
     try {
       // Call contract method to update product details
-      await marketContract.editProduct(selectedID, name, description, price, quantity, ipfsLink);
+
+      const tx = await marketContract.editProduct(selectedID, name, description, price, quantity, ipfsLink);
+      const receipt = await tx.wait();
+
+      // Check the transaction receipt for success or failure
+      if (receipt.status === 1) {
+        alert('Product Added Successfully!');
+      } else {
+        alert('Failed to Add Product');
+      }
+
     } catch (error) {
       console.error('Error updating product:', error);
     }

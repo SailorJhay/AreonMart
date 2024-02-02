@@ -120,7 +120,7 @@ function App() {
                   <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-4">
                     <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                       <h3 className="font-medium text-black dark:text-white">
-                        Register A Marketplace 🏪
+                        🏪Register a Marketplace 🏪
                       </h3>
                     </div>
                     <form

@@ -65,7 +65,8 @@ const Header = (props: {
           <div className="relative">
             <button
               className="inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-              onClick={() => window.open(`https://www.google.com/market=${props.market}`, '_blank')}
+              // onClick={() => window.open(`http://localhost:3000/?market=${props.market}`, '_blank')}
+              onClick={() => window.open(`https://areon-mart-3d.vercel.app/?market=${props.market}`, '_blank')}
             >Go to your AreonMart</button>
           </div>
         </div>
