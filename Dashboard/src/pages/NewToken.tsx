@@ -176,11 +176,10 @@ const NewToken = (props) => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="ipfsLink"
                     >
-                      IPFS Link
+                      Upload 3D Model
                     </label>
                     <div className="mb-5.5">
                       <input type="file" onChange={handleFileUpload} />
-                      {ipfsLink && <p>IPFS Link: {ipfsLink}</p>}
                     </div>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
