@@ -207,7 +207,7 @@ export default function App() {
             <Model />
             <Player />
             <EquidistantPoints products={products} contract={marketContract} />
-            <Debug/>
+            {/* <Debug/> */}
           </Physics>
 
 
