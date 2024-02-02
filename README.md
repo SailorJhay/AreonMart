@@ -18,6 +18,11 @@ Note: In case the above links are not working, you might have to disable any ad-
 ## 🚀 Run Locally
 
 ### Smart Contracts
+Inside the `smartcontract` directory, create an environment file and provide it with your private key
+
+```
+PRIVATE_KEY=<your_wallet_private_key>
+```
 
 ```bash
   cd smartcontract
