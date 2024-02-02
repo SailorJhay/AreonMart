@@ -7,23 +7,31 @@ export function Model(props) {
   return (
     <group {...props} dispose={null}>
       <group position={[0, -0.481, 16.738]} rotation={[Math.PI, -0.535, Math.PI]}>
+        <RigidBody type="fixed">
         <mesh geometry={nodes.Object_17.geometry} material={materials.Struktur_W} />
+        </RigidBody>
         <mesh geometry={nodes.Object_18.geometry} material={materials.Chrom} />
         <mesh geometry={nodes.Object_19.geometry} material={materials.sehr_helles_warmes_Licht} />
       </group>
       <group position={[0, -0.481, 0.218]} rotation={[-Math.PI, 1.56, -Math.PI]}>
+      <RigidBody type="fixed">
         <mesh geometry={nodes.Object_21.geometry} material={materials.Struktur_W} />
+      </RigidBody>
         <mesh geometry={nodes.Object_22.geometry} material={materials.Chrom} />
         <mesh geometry={nodes.Object_23.geometry} material={materials.sehr_helles_warmes_Licht} />
       </group>
       <group position={[0, -0.481, -16.955]} rotation={[0, -0.512, 0]}>
+      <RigidBody type="fixed">
         <mesh geometry={nodes.Object_25.geometry} material={materials.Struktur_W} />
+        </RigidBody>
         <mesh geometry={nodes.Object_26.geometry} material={materials.Chrom} />
         <mesh geometry={nodes.Object_27.geometry} material={materials.sehr_helles_warmes_Licht} />
       </group>
       <group position={[0, 0.24, 0]}>
         <mesh geometry={nodes.Object_47.geometry} material={materials.Struktur_W} />
+        <RigidBody type="fixed">
         <mesh geometry={nodes.Object_48.geometry} material={materials['Material.054']} />
+        </RigidBody>
         <mesh geometry={nodes.Object_49.geometry} material={materials.Licht} />
       </group>
       <group position={[0, -0.15, 0]}>
