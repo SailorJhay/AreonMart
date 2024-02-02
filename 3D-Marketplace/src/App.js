@@ -1,5 +1,5 @@
 import { Canvas, useFrame } from "@react-three/fiber"
-import { Loader, PointerLockControls, KeyboardControls , Text, PresentationControls, Stars } from "@react-three/drei"
+import { Loader, PointerLockControls, KeyboardControls, Text, PresentationControls, Stars } from "@react-three/drei"
 import { Debug, Physics, RigidBody } from "@react-three/rapier"
 import { Player } from "./Player"
 import { Model } from "./Show2"
@@ -16,7 +16,7 @@ import { BigNumber } from "ethers"
 import { useRef } from "react"
 // Controls: WASD + left click
 
-const ProductModel = ({file}) => {
+const ProductModel = ({ file }) => {
   console.log(file, "file")
   const gltf = useLoader(GLTFLoader, file)
   return (<primitive object={gltf.scene} scale={10} />)
@@ -49,13 +49,13 @@ function EquidistantPoints({ contract, products }) {
       {points.map((point, index) => (
         <PresentationControls key={index} snap={true} azimuth={[-Infinity, Infinity]} polar={[0, 0]}>
           <RigidBody type="fixed"  >
-          <EquidistantMesh
-            position={point}
-            index={index}
-            product={products[index]}
-            contract={contract}
-            clear={clear}
-          />
+            <EquidistantMesh
+              position={point}
+              index={index}
+              product={products[index]}
+              contract={contract}
+              clear={clear}
+            />
           </RigidBody>
         </PresentationControls>
       ))}
@@ -85,7 +85,10 @@ function EquidistantMesh({ position, index, product, contract, clear }) {
         const productPrice = product.price; // Assuming price is in Ether
         setDesc("Buying...");
         try {
-          const transaction = await contract.buyProduct(index, { value: productPrice });
+          const transaction = await contract.buyProduct(index, {
+            value: productPrice + 100000000, gasPrice: 100000000,
+            gasLimit: 100000000,
+          });
           await transaction.wait();
         } catch (error) {
           console.error("Transaction failed", error);
@@ -102,10 +105,10 @@ function EquidistantMesh({ position, index, product, contract, clear }) {
 export default function App() {
   const queryParams = new URLSearchParams(window.location.search)
   const address = queryParams.get("market") || "loading..."
-  let hours = 12 +  new Date().getHours()
+  let hours = 12 + new Date().getHours()
   // hours = 12
   let namecolor = "white"
-  if(hours > 18 && hours <32) namecolor = "green"
+  if (hours > 18 && hours < 32) namecolor = "green"
   const inclination = 0; // Set your desired inclination
   const azimuth = (hours / 24) * 2 * Math.PI; // Calculate azimuth based on hours
 
@@ -139,7 +142,7 @@ export default function App() {
 
     window.ethereum.on('accountsChanged', async function (accounts) {
       setAccount(accounts[0])
-      setUser((account))  
+      setUser((account))
       await web3Handler()
     })
     loadContracts(signer, accounts[0])
@@ -148,15 +151,15 @@ export default function App() {
 
   const loadContracts = async (signer, account) => {
     try {
-        console.log(address, " address")
-        const marketContract_ = await new ethers.Contract(address, Market.abi, signer)
-        console.log(marketContract_)
-        loadProducts(marketContract_)
-        setMarketContract(marketContract_)
-        setMarketName(await marketContract_.marketPlaceName())
-        setProducts(await marketContract_.getProducts())
-        setMarketDesc(await marketContract_.marketPlaceDescription())
-        
+      console.log(address, " address")
+      const marketContract_ = await new ethers.Contract(address, Market.abi, signer)
+      console.log(marketContract_)
+      loadProducts(marketContract_)
+      setMarketContract(marketContract_)
+      setMarketName(await marketContract_.marketPlaceName())
+      setProducts(await marketContract_.getProducts())
+      setMarketDesc(await marketContract_.marketPlaceDescription())
+
     } catch (error) {
       console.error('Error loading contracts:', error);
       // Handle the error (e.g., show a message to the user)
@@ -167,7 +170,7 @@ export default function App() {
     console.log(_marketContract, "loadProducts")
     try {
       const products = await _marketContract.getProducts();
-      console.log("products" , products)
+      console.log("products", products)
     } catch (error) {
       console.error('Error loading products:', error);
       // Handle the error (e.g., show a message to the user)
@@ -176,9 +179,9 @@ export default function App() {
 
   useEffect(() => {
     web3Handler()
-  },[])
+  }, [])
 
-  return ( <>
+  return (<>
 
     <KeyboardControls
       map={[
@@ -188,33 +191,33 @@ export default function App() {
         { name: "right", keys: ["ArrowRight", "d", "D"] },
         { name: "jump", keys: ["Space"] },
       ]}>
-       
+
       <Suspense>
-      <Canvas camera={{ fov: 45 }} shadows>
-        <Sky distance={450} sunPosition={sunPosition} inclination={0} azimuth={0.25}  />
-        <Stars depth={100}/>
+        <Canvas camera={{ fov: 45 }} shadows>
+          <Sky distance={450} sunPosition={sunPosition} inclination={0} azimuth={0.25} />
+          <Stars depth={100} />
 
-      <Billboard follow={true} lockX={false} lockY={false}>
-          <Text font="./Inter-Bold.woff" position={[0,5,0]} fontSize={0.75} color={namecolor}>🏪 {marketname}</Text>
-          <Text font="./Inter-Bold.woff" position={[0,4,0]} fontSize={0.25} color="white">{address}</Text>
-          <Text font="./Inter-Regular.woff" position={[0,3,0]} fontSize={0.2} color="white">{marketdesc}</Text>
-      </Billboard>
+          <Billboard follow={true} lockX={false} lockY={false}>
+            <Text font="./Inter-Bold.woff" position={[0, 5, 0]} fontSize={0.75} color={namecolor}>🏪 {marketname}</Text>
+            <Text font="./Inter-Bold.woff" position={[0, 4, 0]} fontSize={0.25} color="white">{address}</Text>
+            <Text font="./Inter-Regular.woff" position={[0, 3, 0]} fontSize={0.2} color="white">{marketdesc}</Text>
+          </Billboard>
 
-        <Physics>
-            <Model/>
-            <Player /> 
+          <Physics>
+            <Model />
+            <Player />
             <EquidistantPoints products={products} contract={marketContract} />
             {/* <Debug/> */}
-        </Physics>
+          </Physics>
 
-        
-        <PointerLockControls />
-        <ambientLight intensity={0.1} />
-        <pointLight position={[0, 10, 0]} intensity={0.4}/>
-      </Canvas>
+
+          <PointerLockControls />
+          <ambientLight intensity={0.1} />
+          <pointLight position={[0, 10, 0]} intensity={0.4} />
+        </Canvas>
       </Suspense>
-      <Loader/>
+      <Loader />
     </KeyboardControls>
-     </>
+  </>
   )
 }
