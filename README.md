@@ -4,7 +4,6 @@
 
 AreonMart revolutionizes e-commerce by democratizing 3D model storefronts. Whether you're an artist or a store owner, easily showcase and sell products – from cars to fashion – with personalized contracts on the Areon Blockchain. Join us in reshaping the future of online commerce, where every business finds its unique space – AreonMart, where innovation meets market accessibility.
 
- ![alt text](images/thumb.png)
  ![alt text](images/cs.png)
 
 ## 🚀 Run Locally
